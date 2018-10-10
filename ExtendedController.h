@@ -11,6 +11,9 @@ protected:
 	void handleMouseMotion(int x, int y);
 public:
 	ExtendedController(const std::string& name, int rcFlags = 0);
-};
 
+private:
+	int screenbaseX;
+	int screenbaseY;
+};
 #endif
