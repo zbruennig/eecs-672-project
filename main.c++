@@ -1,8 +1,9 @@
 // main.c++: Starter for EECS 672 Projects 2-4
 
 #include "ExtendedController.h"
-#include "TEMPLATE_Subclass.h"
 #include "Block.h"
+#include "Sphere.h"
+#include "Leg.h"
 
 void createScene(ExtendedController& c, ShaderIF* sIF)
 {
@@ -12,7 +13,7 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	float table[] = {1,1,1}; //TODO update
 	float sides[] = {1,1,1}; //TODO update
 	float pockets[] = {0.1,0.1,0.1};
-	float pocketSides[] = {186.0/255, 196.0/255, 191.0/255};
+	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
 	float legs[] = {0.3, 0.3, 0.3};
 
 	float yellow[] = {1.0, 224.0/255, 26.0/255};
@@ -22,11 +23,14 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	float orange[] = {1, 90.0/255, 26.0/255};
 	float green[] = {0, 77.0/255, 36.0/255};
 	float brown[] = {144.0/255, 36.0/255, 36.0/255};
-	float black[] = {0,0,0};
+	float black[] = {0.08,0.08,0.08};
 	float cue[] = {233.0/255, 233.0/255, 233.0/255};
 
 	c.addModel(new Block(sIF, 0.0, 0, 0, 3.5, 1.5, 2.5, cue));
-	c.addModel(new Block(sIF, 4, 4, 4, 0.5, 1.5, 2.5, red));
+
+	float center[] = {0, 0, 0};
+	c.addModel(new Sphere(sIF, center, 10, purple));
+	// c.addModel(new Block(sIF, 4, 4, 4, 0.5, 1.5, 2.5, red));
 }
 
 void set3DViewingInformation(double overallBB[])
@@ -37,7 +41,7 @@ void set3DViewingInformation(double overallBB[])
 	// MC -> EC:
 
 	// Compute/set eye, center, up
-	cryph::AffPoint eye(4.0, -3.0, 5.0);
+	cryph::AffPoint eye(10.0, -5.0, 8.0);
 
 	double x = 0.5*(overallBB[0] + overallBB[1]);
 	double y = 0.5*(overallBB[2] + overallBB[3]);
@@ -72,7 +76,7 @@ int main(int argc, char* argv[])
 
 	createScene(c, sIF);
 
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(81.0/255, 0, 0, 1.0);
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);

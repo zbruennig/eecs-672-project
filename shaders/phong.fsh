@@ -12,7 +12,7 @@ in PVA
 uniform mat4 ec_lds; // so projection type and hence vHat can be determined
 
 // Phong material properties (RGB reflectances);
-uniform vec3 ka = vec3(0.8, 0.0, 0.0); // default: darkish red
+uniform vec3 ka; // default: darkish red
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
 // Lighting environment
 // RGB strength of assumed ambient light:
@@ -23,32 +23,24 @@ out vec4 fragmentColor;
 
 vec4 evaluateLightingModel()
 {
-	// THIS IS JUST A PLACEHOLDER FOR A LIGHTING MODEL.
-	// It only currently implements simple Lambert shading.
-
-	// NOTE: We assume a single directional light source defined in EC (liHat).
-	//
-	// In project 3, several aspects of this will be generalized.
-
 	vec3 liHat = vec3(0.0, 0.0, 1.0); // directional light in EC at eye (a flashlight)
 
-	// Use liHat, the uniforms, and the incoming PVA values to compute
-	// the simplified Phong model we are using for project 2.
+	//Compute each component, and the dot product separately
+	float dotProduct = ( (liHat.x * pvaIn.ecUnitNormal.x) + (liHat.y * pvaIn.ecUnitNormal.y) + (liHat.z * pvaIn.ecUnitNormal.z) );
+	float r = ka.r * La.r;
+	float g = ka.g * La.g;
+	float b = ka.b * La.b;
 
-	// For now:
-	float a = pvaIn.ecUnitNormal.r / pvaIn.ecUnitNormal.r;
-	return vec4(kd, a);
-	//So that mcNormal gets "used" and won't error
-	/*return vec4(0.0, 0.0, 0.0, 1.0);*/
+	if (dotProduct >= 0) {
+		r += kd.r * dotProduct;
+		g += kd.g * dotProduct;
+		b += kd.b * dotProduct;
+	}
+
+	return vec4(r, g, b, 1.0);
 }
 
-void main ()
+void main()
 {
-	float doit = kd.r;
-	if(doit==0.31415) {
-			fragmentColor = evaluateLightingModel();
-	}
-	else{
-		fragmentColor = vec4(kd, 0);
-	}
+	fragmentColor = evaluateLightingModel();
 }

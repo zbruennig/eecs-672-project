@@ -37,7 +37,7 @@ out PVA
 	vec3 ecUnitNormal;
 } pvaOut;
 
-void main ()
+void main()
 {
 	// convert current vertex and its associated normal to eye coordinates
 	vec4 p_ecPosition = mc_ec * vec4(mcPosition, 1.0);

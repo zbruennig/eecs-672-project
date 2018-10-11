@@ -1,4 +1,4 @@
-// Block.c++ - gracious taken from the MandM example
+// Block.c++ - graciously stolen and modified from the MandM sample
 
 #include <iostream>
 #include <math.h>
@@ -17,9 +17,9 @@ GLuint Block::indexList[3][4] = {
 Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, float lz, float colorIn[]) :
 	shaderIF(sIF)
 {
-	xmin = cx; xmax = cx + lx;
-	ymin = cy; ymax = cy + ly;
-	zmin = cz; zmax = cz + lz;
+	xmin = cx - lx/2; xmax = cx + lx/2;
+	ymin = cy - ly/2; ymax = cy + ly/2;
+	zmin = cz - lz/2; zmax = cz + lz/2;
 
 	kd[0] = colorIn[0]; kd[1] = colorIn[1]; kd[2] = colorIn[2];
 	defineBlock();
@@ -80,6 +80,7 @@ void Block::renderBlock()
 {
 	glBindVertexArray(vao[0]);
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
+	glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd); //We will make ka the same as kd
 
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, 1.0);
