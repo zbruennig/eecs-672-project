@@ -17,6 +17,8 @@ GLuint Block::indexList[3][4] = {
 Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, float lz, float colorIn[]) :
 	shaderIF(sIF)
 {
+	//NOTE: Changed from the MandM version, the cx,cy,cz now represent the center,
+	//lx,ly,lz are the lengths in the x,y,z direction as usual
 	xmin = cx - lx/2; xmax = cx + lx/2;
 	ymin = cy - ly/2; ymax = cy + ly/2;
 	zmin = cz - lz/2; zmax = cz + lz/2;

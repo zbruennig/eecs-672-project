@@ -10,11 +10,13 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	// TODO: Implement this function
 
 	//Define the colors of everything we'll need.
-	float table[] = {1,1,1}; //TODO update
-	float sides[] = {1,1,1}; //TODO update
+	float table[] = {166.0/255 , 128.0/255 ,100.0/255};
 	float pockets[] = {0.1,0.1,0.1};
 	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
 	float legs[] = {0.3, 0.3, 0.3};
+
+	float bumper[] = {11.0/255, 226.0/255, 32.0/255};
+	float playingField[] = {9.0/255, 186.0/255, 26.0/255};
 
 	float yellow[] = {1.0, 224.0/255, 26.0/255};
 	float blue[] = {26.0/255, 88.0/255, 1};
@@ -26,11 +28,26 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	float black[] = {0.08,0.08,0.08};
 	float cue[] = {233.0/255, 233.0/255, 233.0/255};
 
-	c.addModel(new Block(sIF, 0.0, 0, 0, 3.5, 1.5, 2.5, cue));
+	c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField)); //playing area
+	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table)); //underneath
+	c.addModel(new Block(sIF, -136, 0, -3, 10, 127, 14, table)); //left side
+	c.addModel(new Block(sIF, 136, 0, -3, 10, 127, 14, table)); //right side
+	c.addModel(new Block(sIF, -66, 72.5, -3, 122, 10, 14, table)); //up left
+	c.addModel(new Block(sIF, 66, 72.5, -3, 122, 10, 14, table)); //up right
+	c.addModel(new Block(sIF, -66, -72.5, -3, 122, 10, 14, table)); //down left
+	c.addModel(new Block(sIF, 66, -72.5, -3, 122, 10, 14, table)); //down right
 
-	float center[] = {0, 0, 0};
-	c.addModel(new Sphere(sIF, center, 10, purple));
-	// c.addModel(new Block(sIF, 4, 4, 4, 0.5, 1.5, 2.5, red));
+	//Temporary "balls"
+	c.addModel(new Block(sIF, -100, -30, 3.175, 6.35, 6.35, 6.35, cue)); //cue ball
+	c.addModel(new Block(sIF, 60, 0, 3.175, 6.35, 6.35, 6.35, yellow)); //1 ball
+	c.addModel(new Block(sIF, 65.499, -3.175, 3.175, 6.35, 6.35, 6.35, blue)); //2 ball
+	c.addModel(new Block(sIF, 65.499, 3.175, 3.175, 6.35, 6.35, 6.35, red)); //3 ball
+	c.addModel(new Block(sIF, 70.999, -6.35, 3.175, 6.35, 6.35, 6.35, purple)); //4 ball
+	c.addModel(new Block(sIF, 70.999, 6.35, 3.175, 6.35, 6.35, 6.35, orange)); //5 ball
+	c.addModel(new Block(sIF, 76.498, -3.175, 3.175, 6.35, 6.35, 6.35, green)); //6 ball
+	c.addModel(new Block(sIF, 76.498, 3.175, 3.175, 6.35, 6.35, 6.35, brown)); //7 ball
+	c.addModel(new Block(sIF, 81.997, 0, 3.175, 6.35, 6.35, 6.35, black)); //8 ball
+	c.addModel(new Block(sIF, 70.999, 0, 3.175, 6.35, 6.35, 6.35, yellow)); //9 ball
 }
 
 void set3DViewingInformation(double overallBB[])
@@ -76,7 +93,7 @@ int main(int argc, char* argv[])
 
 	createScene(c, sIF);
 
-	glClearColor(81.0/255, 0, 0, 1.0);
+	glClearColor(.2, .2, .2, 1.0);
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);
