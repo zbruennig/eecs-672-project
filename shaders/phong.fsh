@@ -49,6 +49,6 @@ void main ()
 			fragmentColor = evaluateLightingModel();
 	}
 	else{
-		fragmentColor = vec4(normalize(pvaIn.ecPosition),.5);
+		fragmentColor = vec4(kd, 0);
 	}
 }
