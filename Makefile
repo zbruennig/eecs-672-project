@@ -7,7 +7,7 @@ LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ..
 GL_LIB_LOC = -L/usr/lib/nvidia-375
 GL_LIBRARIES = $(GL_LIB_LOC) -lglfw -lGLU -lGL
 
-OBJS = main.o ExtendedController.o Block.o Sphere.o Leg.o
+OBJS = main.o ExtendedController.o Block.o Sphere.o Leg.o Bumper.o
 
 main: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 	$(LINK) -o main $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
@@ -37,6 +37,8 @@ Sphere.o: Sphere.h Sphere.c++
 	$(CPP) $(C_FLAGS) Sphere.c++
 Leg.o: Leg.h Leg.c++
 	$(CPP) $(C_FLAGS) Leg.c++
+Bumper.o: Bumper.h Bumper.c++
+	$(CPP) $(C_FLAGS) Bumper.c++
 
 clean:
 	rm main *.o

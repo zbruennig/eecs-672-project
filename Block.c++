@@ -37,7 +37,7 @@ Block::~Block()
 void Block::defineBlock()
 {
 	vec3 vtx[] = { // The 8 unique vertices (Note the order)
-		{xmin ,ymin, zmax}, {xmin, ymax, zmax},
+		{xmin, ymin, zmax}, {xmin, ymax, zmax},
 		{xmax, ymin, zmax}, {xmax, ymax, zmax},
 		{xmax, ymin, zmin}, {xmax, ymax, zmin},
 		{xmin, ymin, zmin}, {xmin, ymax, zmin}

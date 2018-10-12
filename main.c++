@@ -4,6 +4,7 @@
 #include "Block.h"
 #include "Sphere.h"
 #include "Leg.h"
+#include "Bumper.h"
 
 void createScene(ExtendedController& c, ShaderIF* sIF)
 {
@@ -14,9 +15,8 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	float pockets[] = {0.1,0.1,0.1};
 	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
 	float legs[] = {0.3, 0.3, 0.3};
-
-	float bumper[] = {11.0/255, 226.0/255, 32.0/255};
-	float playingField[] = {9.0/255, 186.0/255, 26.0/255};
+	float playingField[] = {34.0/255, 168.0/255, 52.0/255};
+	float bumper[] = {9.0/255, 186.0/255, 26.0/255};
 
 	float yellow[] = {1.0, 224.0/255, 26.0/255};
 	float blue[] = {26.0/255, 88.0/255, 1};
@@ -30,12 +30,12 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 
 	c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField)); //playing area
 	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table)); //underneath
-	c.addModel(new Block(sIF, -136, 0, -3, 10, 127, 14, table)); //left side
-	c.addModel(new Block(sIF, 136, 0, -3, 10, 127, 14, table)); //right side
-	c.addModel(new Block(sIF, -66, 72.5, -3, 122, 10, 14, table)); //up left
-	c.addModel(new Block(sIF, 66, 72.5, -3, 122, 10, 14, table)); //up right
-	c.addModel(new Block(sIF, -66, -72.5, -3, 122, 10, 14, table)); //down left
-	c.addModel(new Block(sIF, 66, -72.5, -3, 122, 10, 14, table)); //down right
+	c.addModel(new Block(sIF, -136, 0, -3, 10, 119, 14, table)); //left side
+	c.addModel(new Block(sIF, 136, 0, -3, 10, 119, 14, table)); //right side
+	c.addModel(new Block(sIF, -64, 72.5, -3, 118, 10, 14, table)); //up left
+	c.addModel(new Block(sIF, 64, 72.5, -3, 118, 10, 14, table)); //up right
+	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table)); //down left
+	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
 
 	//Temporary "balls"
 	c.addModel(new Block(sIF, -100, -30, 3.175, 6.35, 6.35, 6.35, cue)); //cue ball
@@ -48,6 +48,30 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, 76.498, 3.175, 3.175, 6.35, 6.35, 6.35, brown)); //7 ball
 	c.addModel(new Block(sIF, 81.997, 0, 3.175, 6.35, 6.35, 6.35, black)); //8 ball
 	c.addModel(new Block(sIF, 70.999, 0, 3.175, 6.35, 6.35, 6.35, yellow)); //9 ball
+
+	float points[4][2] = { {127,55.5}, {131,59.5}, {131,-59.5}, {127,-55.5} }; //right bumper
+	c.addModel(new Bumper(sIF, points, 0, 4, bumper));
+
+	for(int i=0; i<4; i++){
+		points[i][0] *= -1;
+	}
+	c.addModel(new Bumper(sIF, points, 0, 4, bumper)); //left bumper
+
+	//top and bottom bumpers
+	float points2[4][2] = { {-123, 67.5}, {-5, 67.5}, {-9, 63.5}, {-119, 63.5} };
+	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
+	for(int i=0; i<4; i++){
+		points2[i][0] *= -1;
+	}
+	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
+	for(int i=0; i<4; i++){
+		points2[i][1] *= -1;
+	}
+	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
+	for(int i=0; i<4; i++){
+		points2[i][0] *= -1;
+	}
+	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
 }
 
 void set3DViewingInformation(double overallBB[])
@@ -58,7 +82,7 @@ void set3DViewingInformation(double overallBB[])
 	// MC -> EC:
 
 	// Compute/set eye, center, up
-	cryph::AffPoint eye(10.0, -5.0, 8.0);
+	cryph::AffPoint eye(10.0, -5.0, 40.0);
 
 	double x = 0.5*(overallBB[0] + overallBB[1]);
 	double y = 0.5*(overallBB[2] + overallBB[3]);

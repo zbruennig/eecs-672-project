@@ -13,7 +13,7 @@ public:
 	ExtendedController(const std::string& name, int rcFlags = 0);
 
 private:
-	int screenbaseX;
-	int screenbaseY;
+	int screenbaseX = -100; //initial values, will be quickly replaced
+	int screenbaseY = -100;
 };
 #endif
