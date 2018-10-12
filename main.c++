@@ -11,7 +11,7 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	// TODO: Implement this function
 
 	//Define the colors of everything we'll need.
-	float table[] = {166.0/255 , 128.0/255 ,100.0/255};
+	float table[] = {121.0/255 , 91.0/255 , 69.0/255};
 	float pockets[] = {0.1,0.1,0.1};
 	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
 	float legs[] = {0.3, 0.3, 0.3};
@@ -153,7 +153,7 @@ void set3DViewingInformation(double overallBB[])
 
 	// Compute/set ecZmin, ecZmax (It is often useful to exaggerate
 	// these limits somewhat to prevent unwanted depth clipping.)
-	double ecZmin = -200, ecZmax = 200;
+	double ecZmin = -1000, ecZmax = 1000;
 	ModelView::setECZminZmax(ecZmin, ecZmax);
 
 	// Compute/set ecZpp
