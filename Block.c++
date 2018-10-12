@@ -29,7 +29,7 @@ Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, fl
 
 Block::~Block()
 {
-	glDeleteBuffers(3,ebo);
+	glDeleteBuffers(3, ebo);
 	glDeleteBuffers(1, vbo);
 	glDeleteVertexArrays(1, vao);
 }

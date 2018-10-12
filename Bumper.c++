@@ -113,7 +113,6 @@ void Bumper::renderBumper()
 	vec1 = cryph::AffVector(xys[3][0]-xys[2][0], xys[3][1] - xys[2][1], 0);
 	vec2 = cryph::AffVector(0, 0, 1);
 	cross = vec1.cross(vec2);
-	std::cout << cross << "\n";
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), cross.dx, cross.dy, cross.dz);
 	glDrawArrays(GL_TRIANGLE_STRIP, 2, 4);
 
@@ -125,7 +124,6 @@ void Bumper::renderBumper()
 	vec1 = cryph::AffVector(xys[1][0]-xys[0][0], xys[1][1] - xys[0][1], 0);
 	vec2 = cryph::AffVector(xys[1][0]-xys[0][0], xys[1][1] - xys[0][1], 1);
 	cross = vec1.cross(vec2);
-	std::cout << cross << "\n";
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), cross.dx, cross.dy, cross.dz);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
@@ -133,7 +131,6 @@ void Bumper::renderBumper()
 	vec1 = cryph::AffVector(xys[2][0]-xys[0][0], xys[2][1] - xys[0][1], 0);
 	vec2 = cryph::AffVector(0, 0, 1);
 	cross = vec1.cross(vec2);
-	std::cout << cross << "\n";
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), cross.dx, cross.dy, cross.dz);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[1]);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
@@ -141,7 +138,6 @@ void Bumper::renderBumper()
 	vec1 = cryph::AffVector(0, 0, 1);
 	vec2 = cryph::AffVector(xys[3][0]-xys[1][0], xys[3][1] - xys[1][1], 0);
 	cross = vec1.cross(vec2);
-	std::cout << cross << "\n";
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), cross.dx, cross.dy, cross.dz);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[2]);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);

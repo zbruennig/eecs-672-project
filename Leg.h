@@ -19,7 +19,14 @@ public:
 	void render();
 private:
 	ShaderIF* shaderIF;
+	GLuint vao[3];
+	GLuint sides[2]; // 0: coordinates; 1: normal vectors
+	GLuint top[2]; // 0: coordinates; 1: normal vectors
+	GLuint bottom[2]; // 0: coordinates; 1: normal vectors
 	float ka[3], kd[3];
+
+	const int POINTS_AROUND_SLICE = 72;
+	float upper, lower, x, y;
 
   float xmin, xmax, ymin, ymax, zmin, zmax;
 

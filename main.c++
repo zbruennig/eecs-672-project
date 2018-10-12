@@ -38,16 +38,16 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
 
 	//Temporary "balls"
-	c.addModel(new Block(sIF, -100, -30, 3.175, 6.35, 6.35, 6.35, cue)); //cue ball
-	c.addModel(new Block(sIF, 60, 0, 3.175, 6.35, 6.35, 6.35, yellow)); //1 ball
-	c.addModel(new Block(sIF, 65.499, -3.175, 3.175, 6.35, 6.35, 6.35, blue)); //2 ball
-	c.addModel(new Block(sIF, 65.499, 3.175, 3.175, 6.35, 6.35, 6.35, red)); //3 ball
-	c.addModel(new Block(sIF, 70.999, -6.35, 3.175, 6.35, 6.35, 6.35, purple)); //4 ball
-	c.addModel(new Block(sIF, 70.999, 6.35, 3.175, 6.35, 6.35, 6.35, orange)); //5 ball
-	c.addModel(new Block(sIF, 76.498, -3.175, 3.175, 6.35, 6.35, 6.35, green)); //6 ball
-	c.addModel(new Block(sIF, 76.498, 3.175, 3.175, 6.35, 6.35, 6.35, brown)); //7 ball
-	c.addModel(new Block(sIF, 81.997, 0, 3.175, 6.35, 6.35, 6.35, black)); //8 ball
-	c.addModel(new Block(sIF, 70.999, 0, 3.175, 6.35, 6.35, 6.35, yellow)); //9 ball
+	c.addModel(new Leg(sIF, -100, -30, 0, 6.35, 3.175, 3.175, cue)); //cue ball
+	c.addModel(new Leg(sIF, 60, 0, 0, 6.35, 3.175, 3.175, yellow)); //1 ball
+	c.addModel(new Leg(sIF, 65.499, -3.175, 0, 6.35, 3.175, 3.175, blue)); //2 ball
+	c.addModel(new Leg(sIF, 65.499, 3.175, 0, 6.35, 3.175, 3.175, red)); //3 ball
+	c.addModel(new Leg(sIF, 70.999, -6.35, 0, 6.35, 3.175, 3.175, purple)); //4 ball
+	c.addModel(new Leg(sIF, 70.999, 6.35, 0, 6.35, 3.175, 3.175, orange)); //5 ball
+	c.addModel(new Leg(sIF, 76.498, -3.175, 0, 6.35, 3.175, 3.175, green)); //6 ball
+	c.addModel(new Leg(sIF, 76.498, 3.175, 0, 6.35, 3.175, 3.175, brown)); //7 ball
+	c.addModel(new Leg(sIF, 81.997, 0, 0, 6.35, 3.175, 3.175, black)); //8 ball
+	c.addModel(new Leg(sIF, 70.999, 0, 0, 6.35, 3.175, 3.175, yellow)); //9 ball
 
 	float points[4][2] = { {127,55.5}, {131,59.5}, {131,-59.5}, {127,-55.5} }; //right bumper
 	c.addModel(new Bumper(sIF, points, 0, 4, bumper));
@@ -72,6 +72,59 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 		points2[i][0] *= -1;
 	}
 	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
+
+	//Legs of the table
+	c.addModel(new Leg(sIF, -92, -53.5, -10, -60, 8, 12, legs));
+	c.addModel(new Leg(sIF, 92, -53.5, -10, -60, 8, 12, legs));
+	c.addModel(new Leg(sIF, -92, 53.5, -10, -60, 8, 12, legs));
+	c.addModel(new Leg(sIF, 92, 53.5, -10, -60, 8, 12, legs));
+	//bridge connecting the legs
+	c.addModel(new Block(sIF, -92, 0, -18, 6, 100, 16, legs));
+	c.addModel(new Block(sIF, 92, 0, -18, 6, 100, 16, legs));
+
+	//pockets and pocketSides
+	c.addModel(new Leg(sIF, 0, 72.5, -8, 0, 5, 5, pockets));
+	c.addModel(new Block(sIF, 0, 72.5, -9, 10, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 0, 78.5, -3, 14, 2, 14, pocketSides));
+
+	c.addModel(new Leg(sIF, 0, -72.5, -8, 0, 5, 5, pockets));
+	c.addModel(new Block(sIF, 0, -72.5, -9, 10, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 0, -78.5, -3, 14, 2, 14, pocketSides));
+
+	c.addModel(new Leg(sIF, -135, 70.5, -8, 0, 5, 5, pockets));
+	c.addModel(new Leg(sIF, 135, 70.5, -8, 0, 5, 5, pockets));
+
+	c.addModel(new Leg(sIF, -135, -70.5, -8, 0, 5, 5, pockets));
+	c.addModel(new Leg(sIF, 135, -70.5, -8, 0, 5, 5, pockets));
+
+	c.addModel(new Block(sIF, -136, -68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, -127, -72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, -140.5, -68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, -132, -77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, -136, -62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, -126, -72.5, -4, 8, 10, 8, pocketSides));
+
+	c.addModel(new Block(sIF, 136, -68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, 127, -72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 140.5, -68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, 132, -77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, 136, -62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, 126, -72.5, -4, 8, 10, 8, pocketSides));
+
+	c.addModel(new Block(sIF, -136, 68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, -127, 72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, -140.5, 68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, -132, 77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, -136, 62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, -126, 72.5, -4, 8, 10, 8, pocketSides));
+
+	c.addModel(new Block(sIF, 136, 68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, 127, 72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 140.5, 68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, 132, 77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, 136, 62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, 126, 72.5, -4, 8, 10, 8, pocketSides));
+
 }
 
 void set3DViewingInformation(double overallBB[])
@@ -82,7 +135,7 @@ void set3DViewingInformation(double overallBB[])
 	// MC -> EC:
 
 	// Compute/set eye, center, up
-	cryph::AffPoint eye(10.0, -5.0, 40.0);
+	cryph::AffPoint eye(10.0, -5.0, 20.0);
 
 	double x = 0.5*(overallBB[0] + overallBB[1]);
 	double y = 0.5*(overallBB[2] + overallBB[3]);
@@ -100,7 +153,7 @@ void set3DViewingInformation(double overallBB[])
 
 	// Compute/set ecZmin, ecZmax (It is often useful to exaggerate
 	// these limits somewhat to prevent unwanted depth clipping.)
-	double ecZmin = -1000, ecZmax = 1000;
+	double ecZmin = -200, ecZmax = 200;
 	ModelView::setECZminZmax(ecZmin, ecZmax);
 
 	// Compute/set ecZpp
@@ -117,7 +170,7 @@ int main(int argc, char* argv[])
 
 	createScene(c, sIF);
 
-	glClearColor(.2, .2, .2, 1.0);
+	glClearColor(.2, .0, .0, 1.0);
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);
