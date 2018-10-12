@@ -8,10 +8,8 @@
 
 void createScene(ExtendedController& c, ShaderIF* sIF)
 {
-	// TODO: Implement this function
-
 	//Define the colors of everything we'll need.
-	float table[] = {121.0/255 , 91.0/255 , 69.0/255};
+	float table[] = {121.0/255, 91.0/255, 69.0/255};
 	float pockets[] = {0.1,0.1,0.1};
 	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
 	float legs[] = {0.3, 0.3, 0.3};
@@ -125,6 +123,8 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, 136, 62.5, -4, 10, 6, 8, pocketSides));
 	c.addModel(new Block(sIF, 126, 72.5, -4, 8, 10, 8, pocketSides));
 
+	float position[3] = {5, 10, 25};
+	c.addModel(new Sphere(sIF, position, 4, red));
 }
 
 void set3DViewingInformation(double overallBB[])
@@ -151,13 +151,16 @@ void set3DViewingInformation(double overallBB[])
 	// Specify the initial projection type desired
 	ModelView::setProjection(ORTHOGONAL);
 
+
+	double radius = overallBB[1]-overallBB[0];
+
 	// Compute/set ecZmin, ecZmax (It is often useful to exaggerate
 	// these limits somewhat to prevent unwanted depth clipping.)
-	double ecZmin = -1000, ecZmax = 1000;
+	double ecZmin = radius*-50, ecZmax = radius*50;
 	ModelView::setECZminZmax(ecZmin, ecZmax);
 
 	// Compute/set ecZpp
-	double ecZpp = -100;
+	double ecZpp = radius*-2;
 	ModelView::setProjectionPlaneZ(ecZpp);
 }
 

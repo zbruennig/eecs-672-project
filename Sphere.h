@@ -18,8 +18,15 @@ public:
 	void render();
 private:
 	ShaderIF* shaderIF;
+	GLuint vao[3];
+	GLuint sides[2]; // 0: coordinates; 1: normal vectors
+	GLuint top[2]; // 0: coordinates; 1: normal vectors
+	GLuint bottom[2]; // 0: coordinates; 1: normal vectors
 	float ka[3], kd[3];
 
+	const int THETA_POINTS = 32;
+	const int PHI_POINTS = 16;
+	float x, y, z, r;
   float xmin, xmax, ymin, ymax, zmin, zmax;
 
 	void generateSphere();
