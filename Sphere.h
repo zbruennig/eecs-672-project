@@ -6,6 +6,8 @@
 #include "ModelView.h"
 #include "ShaderIF.h"
 
+typedef float vec3[3];
+
 class Sphere : public ModelView
 {
 public:
@@ -18,14 +20,21 @@ public:
 	void render();
 private:
 	ShaderIF* shaderIF;
+
+	static const int THETA_POINTS = 32;
+	static const int PHI_POINTS = 16;
+
 	GLuint vao[3];
 	GLuint sides[2]; // 0: coordinates; 1: normal vectors
 	GLuint top[2]; // 0: coordinates; 1: normal vectors
 	GLuint bottom[2]; // 0: coordinates; 1: normal vectors
+	GLuint ebo[THETA_POINTS*(PHI_POINTS-2)];
 	float ka[3], kd[3];
 
-	const int THETA_POINTS = 32;
-	const int PHI_POINTS = 16;
+	vec3** c = nullptr;
+	vec3** n = nullptr;
+	GLuint vertices[PHI_POINTS-2][THETA_POINTS][4];
+
 	float x, y, z, r;
   float xmin, xmax, ymin, ymax, zmin, zmax;
 

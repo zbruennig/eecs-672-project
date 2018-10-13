@@ -2,8 +2,6 @@
 
 #include "Sphere.h"
 
-typedef float vec3[3];
-
 Sphere::Sphere(ShaderIF* sIF, float center[], float radius, float color[]) : shaderIF(sIF)
 {
   xmin = center[0] - radius;
@@ -30,7 +28,26 @@ Sphere::~Sphere()
   glDeleteBuffers(2, sides);
   glDeleteBuffers(2, top);
   glDeleteBuffers(2, bottom);
+  glDeleteBuffers(THETA_POINTS*(PHI_POINTS-2), ebo);
   glDeleteVertexArrays(3, vao);
+
+  if(c != nullptr){
+    for(int i=0; i<PHI_POINTS-1; i++){
+      if(n[i] != nullptr){
+        delete[] n[i];
+      }
+    }
+    delete[] c;
+  }
+
+  if(n != nullptr){
+    for(int i=0; i<PHI_POINTS-1; i++){
+      if(n[i] != nullptr){
+        delete[] n[i];
+      }
+    }
+    delete[] n;
+  }
 }
 
 // xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -136,8 +153,8 @@ void Sphere::generateSphere() {
   theta = 0.0;
   phi = dPhi; //start here instead of the top since we already generated it
 
-  vec3** c = new vec3*[PHI_POINTS-1];
-  vec3** n = new vec3*[PHI_POINTS-1];
+  c = new vec3*[PHI_POINTS-1];
+  n = new vec3*[PHI_POINTS-1];
   for (int i=0; i<PHI_POINTS-1; i++) {
     c[i] = new vec3[THETA_POINTS];
     n[i] = new vec3[THETA_POINTS];
@@ -149,7 +166,7 @@ void Sphere::generateSphere() {
     for(int j=0; j<THETA_POINTS; j++){
       c[i][j][0] = x + r*cos(theta)*sin(phi);
       c[i][j][1] = y + r*sin(theta)*sin(phi);
-      c[i][j][2] = y + r*cos(phi);
+      c[i][j][2] = z + r*cos(phi);
       n[i][j][0] = cos(theta)*sin(phi);
       n[i][j][1] = sin(theta)*sin(phi);
       n[i][j][2] = cos(phi);
@@ -158,13 +175,62 @@ void Sphere::generateSphere() {
     phi += dPhi;
   }
 
-  std::cout << c[PHI_POINTS-2][THETA_POINTS-1][0] << '\n';
-  std::cout << c[PHI_POINTS-2][THETA_POINTS-1][1] << '\n';
-  std::cout << c[PHI_POINTS-2][THETA_POINTS-1][2] << '\n';
+  //We cannot draw triangles directly, we will need to use an ebo
+  //Instead we will need to create a whole bunch of indices
 
-  delete[] c;
-  delete[] n;
+  //We build our indices as a function of PHI_POINTS and THETA_POINTS
+  for(int i=0; i<PHI_POINTS-2; i++){
+    for(int j=0; j<THETA_POINTS; j++){
+      vertices[i][j][0] = THETA_POINTS*i + j;
+      vertices[i][j][1] = THETA_POINTS*(i+1) + j;
+      if(j+1 != THETA_POINTS){
+        vertices[i][j][2] = THETA_POINTS*i + j + 1;
+        vertices[i][j][3] = THETA_POINTS*(i+1) + j + 1;
+      }
+      else{
+        vertices[i][j][2] = THETA_POINTS*(i-1) + j + 1;
+        vertices[i][j][3] = THETA_POINTS*i + j + 1;
+      }
+    }
+  }
 
+  //Now we need to stuff our 3d arrays into vaos and vbos
+  //Convert to 2d first
+
+  vec3* c1 = new vec3[(PHI_POINTS-1)*THETA_POINTS];
+  vec3* n1 = new vec3[(PHI_POINTS-1)*THETA_POINTS];
+  for(int i=0; i<PHI_POINTS-1; i++){
+    for(int j=0; j<THETA_POINTS; j++){
+      for(int k=0; k<3; k++){
+        c1[i*THETA_POINTS+j][k] = c[i][j][k];
+        n1[i*THETA_POINTS+j][k] = n[i][j][k];
+      }
+    }
+  }
+
+  glBindVertexArray(vao[2]);
+  glGenBuffers(2, sides);
+
+  glBindBuffer(GL_ARRAY_BUFFER, sides[0]);
+  glBufferData(GL_ARRAY_BUFFER, (PHI_POINTS-1)*THETA_POINTS*sizeof(vec3), c1, GL_STATIC_DRAW);
+  glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
+
+  glBindBuffer(GL_ARRAY_BUFFER, sides[1]);
+  glBufferData(GL_ARRAY_BUFFER, (PHI_POINTS-1)*THETA_POINTS*sizeof(vec3), n1, GL_STATIC_DRAW);
+  glVertexAttribPointer(shaderIF->pvaLoc("mcNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(shaderIF->pvaLoc("mcNormal"));
+
+  delete[] c1;
+  delete[] n1;
+
+  glGenBuffers(THETA_POINTS*(PHI_POINTS-2), ebo);
+  for(int i=0; i<PHI_POINTS-2; i++){
+    for(int j=0; j<THETA_POINTS; j++){
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i*THETA_POINTS+j]);
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), vertices[i][j], GL_STATIC_DRAW);
+    }
+  }
 }
 
 void Sphere::renderSphere() {
@@ -178,10 +244,13 @@ void Sphere::renderSphere() {
   glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
   glDrawArrays(GL_TRIANGLE_FAN, 0, THETA_POINTS+2);
 
-  // glBindVertexArray(vao[2]);
-  // glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  // glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
-  // glDrawArrays(GL_TRIANGLE_FAN, 0, (POINTS_AROUND_SLICE+2));
+  glBindVertexArray(vao[2]);
+  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
+  glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  for(int i=0; i<THETA_POINTS*(PHI_POINTS-2); i++){
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
+    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
+  }
 }
 
 void Sphere::render()
