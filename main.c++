@@ -142,7 +142,7 @@ void set3DViewingInformation(double overallBB[])
 	// MC -> EC:
 
 	// Compute/set eye, center, up
-	cryph::AffPoint eye(10.0, -5.0, 20.0);
+	cryph::AffPoint eye(0, -10, 10);
 
 	double x = 0.5*(overallBB[0] + overallBB[1]);
 	double y = 0.5*(overallBB[2] + overallBB[3]);
@@ -167,7 +167,7 @@ void set3DViewingInformation(double overallBB[])
 	ModelView::setECZminZmax(ecZmin, ecZmax);
 
 	// Compute/set ecZpp
-	double ecZpp = radius*-2;
+	double ecZpp = radius*-0.1;
 	ModelView::setProjectionPlaneZ(ecZpp);
 }
 
