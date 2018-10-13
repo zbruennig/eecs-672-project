@@ -35,17 +35,27 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table)); //down left
 	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
 
-	//Temporary "balls"
-	c.addModel(new Leg(sIF, -100, -30, 0, 6.35, 3.175, 3.175, cue)); //cue ball
-	c.addModel(new Leg(sIF, 60, 0, 0, 6.35, 3.175, 3.175, yellow)); //1 ball
-	c.addModel(new Leg(sIF, 65.499, -3.175, 0, 6.35, 3.175, 3.175, blue)); //2 ball
-	c.addModel(new Leg(sIF, 65.499, 3.175, 0, 6.35, 3.175, 3.175, red)); //3 ball
-	c.addModel(new Leg(sIF, 70.999, -6.35, 0, 6.35, 3.175, 3.175, purple)); //4 ball
-	c.addModel(new Leg(sIF, 70.999, 6.35, 0, 6.35, 3.175, 3.175, orange)); //5 ball
-	c.addModel(new Leg(sIF, 76.498, -3.175, 0, 6.35, 3.175, 3.175, green)); //6 ball
-	c.addModel(new Leg(sIF, 76.498, 3.175, 0, 6.35, 3.175, 3.175, brown)); //7 ball
-	c.addModel(new Leg(sIF, 81.997, 0, 0, 6.35, 3.175, 3.175, black)); //8 ball
-	c.addModel(new Leg(sIF, 70.999, 0, 0, 6.35, 3.175, 3.175, yellow)); //9 ball
+	//Pool balls
+	float position[3] = {-100, -30, 3.175};
+	c.addModel(new Sphere(sIF, position, 3.175, cue)); //cue ball
+	position[0] = 60; position[1] = 0;
+	c.addModel(new Sphere(sIF, position, 3.175, yellow)); //1 ball
+	position[0] = 65.499; position[1] = -3.175;
+	c.addModel(new Sphere(sIF, position, 3.175, blue)); //2 ball
+	position[1] = 3.175;
+	c.addModel(new Sphere(sIF, position, 3.175, red)); //3 ball
+	position[0] = 70.999; position[1] = -6.35;
+	c.addModel(new Sphere(sIF, position, 3.175, purple)); //4 ball
+	position[1] = 6.35;
+	c.addModel(new Sphere(sIF, position, 3.175, orange)); //5 ball
+	position[0] = 76.498; position[1] = -3.175;
+	c.addModel(new Sphere(sIF, position, 3.175, green)); //6 ball
+	position[1] = 3.175;
+	c.addModel(new Sphere(sIF, position, 3.175, brown)); //7 ball
+	position[0] = 81.997; position[1] = 0;
+	c.addModel(new Sphere(sIF, position, 3.175, black)); //8 ball
+	position[0] = 70.999;
+	c.addModel(new Sphere(sIF, position, 3.175, yellow)); //9 ball
 
 	float points[4][2] = { {127,55.5}, {131,59.5}, {131,-59.5}, {127,-55.5} }; //right bumper
 	c.addModel(new Bumper(sIF, points, 0, 4, bumper));
@@ -122,9 +132,6 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, 132, 77, -2, 18, 1, 12, pocketSides));
 	c.addModel(new Block(sIF, 136, 62.5, -4, 10, 6, 8, pocketSides));
 	c.addModel(new Block(sIF, 126, 72.5, -4, 8, 10, 8, pocketSides));
-
-	float position[3] = {5, 10, 25};
-	c.addModel(new Sphere(sIF, position, 4, red));
 }
 
 void set3DViewingInformation(double overallBB[])
