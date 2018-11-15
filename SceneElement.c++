@@ -53,6 +53,10 @@ void SceneElement::establishMaterial(const PhongMaterial& matl)
 {
 	// This should set all material property parameters, including:
 	// "ka", "kd", "ks", "m", and (for project 4) "alpha"
+	glUniform3fv(shaderIF->ppuLoc("kd"), 1, matl.kd);
+	glUniform3fv(shaderIF->ppuLoc("ka"), 1, matl.ka);
+	// glUniform3fv(shaderIF->ppuLoc("ks"), 1, matl.ks);
+	// glUniform1f(shaderIF->ppuLoc("m"), matl.m);
 }
 
 // NOTE: You may want to modify the interface to this method so that you

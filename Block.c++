@@ -14,7 +14,7 @@ GLuint Block::indexList[3][4] = {
 	{ 1, 7, 3, 5 }  // ymax face
 };
 
-Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, float lz, float colorIn[], PhongMaterial matl) :
+Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, float lz, PhongMaterial matl) :
 	SceneElement(sIF), matl(matl)
 {
 	//NOTE: Changed from the MandM version, the cx,cy,cz now represent the center,
@@ -23,7 +23,6 @@ Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, fl
 	ymin = cy - ly/2; ymax = cy + ly/2;
 	zmin = cz - lz/2; zmax = cz + lz/2;
 
-	kd[0] = colorIn[0]; kd[1] = colorIn[1]; kd[2] = colorIn[2];
 	defineBlock();
 }
 
@@ -81,8 +80,8 @@ bool Block::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 void Block::renderBlock()
 {
 	glBindVertexArray(vao[0]);
-	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-	glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd); //We will make ka the same as kd
+
+	establishMaterial(matl);
 
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, 1.0);
@@ -102,6 +101,7 @@ void Block::renderBlock()
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 1.0, 0.0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[2]);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
+
 }
 
 void Block::render()
@@ -110,11 +110,12 @@ void Block::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderIF->getShaderPgmID());
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(mat));
-	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(mat));
+	establishView();
+	establishLightingEnvironment();
+	// 3. Establish Lighting environment
+	//    complete the implementation of SceneElement::establishLightingEnvironment
+	//    and then call it here.
+
 
 	renderBlock();
 

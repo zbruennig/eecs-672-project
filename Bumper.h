@@ -13,7 +13,8 @@
 class Bumper : public SceneElement
 {
 public:
-	Bumper(ShaderIF* sIF, float xy[4][2], float minZ, float maxZ, float color[]);
+	Bumper(ShaderIF* sIF, float xy[4][2], float minZ, float maxZ,
+		 PhongMaterial matl);
 	virtual ~Bumper();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -29,7 +30,8 @@ private:
 	// "float" here to match the need to send float to VBO.
   float xys[4][2];
 	float xmin, xmax, ymin, ymax, zmin, zmax;
-	float kd[3], ka[3];
+
+	PhongMaterial matl;
 
 	static GLuint indexList[3][4];
 

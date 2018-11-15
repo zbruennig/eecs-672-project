@@ -14,8 +14,9 @@ GLuint Bumper::indexList[3][4] = {
 	{ 1, 7, 3, 5 }  // ymax face
 };
 
-Bumper::Bumper(ShaderIF* sIF, float xy[4][2], float minZ, float maxZ, float color[]) :
-	SceneElement(sIF)
+Bumper::Bumper(ShaderIF* sIF, float xy[4][2], float minZ, float maxZ,
+	PhongMaterial matl) :
+	SceneElement(sIF), matl(matl)
 {
   xmin = xy[0][0];
   ymin = xy[0][1];
@@ -39,10 +40,6 @@ Bumper::Bumper(ShaderIF* sIF, float xy[4][2], float minZ, float maxZ, float colo
 			xys[i][j] = xy[i][j];
 		}
 	}
-
-	kd[0] = ka[0] = color[0];
-  kd[1] = ka[1] = color[1];
-  kd[2] = ka[2] = color[2];
 
 	defineBumper();
 }
@@ -101,8 +98,8 @@ bool Bumper::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 void Bumper::renderBumper()
 {
 	glBindVertexArray(vao[0]);
-	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-	glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd); //We will make ka the same as kd
+
+	establishMaterial(matl);
 
 	// Additional computation to calculate the normal vectors
 	cryph::AffVector vec1, vec2, cross;
@@ -149,11 +146,8 @@ void Bumper::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderIF->getShaderPgmID());
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(mat));
-	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(mat));
+	establishView();
+  establishLightingEnvironment();
 
 	renderBumper();
 

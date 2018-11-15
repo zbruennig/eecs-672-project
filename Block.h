@@ -13,7 +13,7 @@ class Block : public SceneElement
 {
 public:
 	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
-	      float lx, float ly, float lz, float colorIn[], PhongMaterial matl);// lengths in 3 directions
+	      float lx, float ly, float lz, PhongMaterial matl);// lengths in 3 directions
 	virtual ~Block();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -28,7 +28,6 @@ private:
 
 	// "float" here to match the need to send float to VBO.
 	float xmin, xmax, ymin, ymax, zmin, zmax;
-	float kd[3];
 
 	PhongMaterial matl;
 

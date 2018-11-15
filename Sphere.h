@@ -12,7 +12,7 @@ class Sphere : public SceneElement
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	Sphere(ShaderIF* sIF, float center[], float radius, float color[]);
+	Sphere(ShaderIF* sIF, float center[], float radius, PhongMaterial matl);
 	virtual ~Sphere();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -27,7 +27,6 @@ private:
 	GLuint top[2]; // 0: coordinates; 1: normal vectors
 	GLuint bottom[2]; // 0: coordinates; 1: normal vectors
 	GLuint ebo[THETA_POINTS*(PHI_POINTS-2)];
-	float ka[3], kd[3];
 
 	vec3** c = nullptr;
 	vec3** n = nullptr;
@@ -35,6 +34,8 @@ private:
 
 	float x, y, z, r;
   float xmin, xmax, ymin, ymax, zmin, zmax;
+
+	PhongMaterial matl;
 
 	void generateSphere();
 	void renderSphere();

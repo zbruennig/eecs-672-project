@@ -8,34 +8,33 @@
 
 void createScene(ExtendedController& c, ShaderIF* sIF)
 {
-	//Define the colors of everything we'll need.
-	float table[] = {121.0/255, 91.0/255, 69.0/255};
-	float pockets[] = {0.1,0.1,0.1};
-	float pocketSides[] = {106.0/255, 116.0/255, 111.0/255};
-	float legs[] = {0.3, 0.3, 0.3};
-	float playingField[] = {34.0/255, 168.0/255, 52.0/255};
-	float bumper[] = {9.0/255, 186.0/255, 26.0/255};
+	//Define the material properties of everything we'll need.
+	PhongMaterial playingField(34.0/255, 168.0/255, 52.0/255, 1,1,1,25,1);
+	PhongMaterial table(121.0/255, 91.0/255, 69.0/255, 1,1,1,25,1);
+	PhongMaterial pockets(0.1,0.1,0.1, 1,1,1,25,1);
+	PhongMaterial pocketSides(106.0/255, 116.0/255, 111.0/255, 1,1,1,25,1);
+	PhongMaterial legs(0.3, 0.3, 0.3, 1,1,1,25,1);
+	PhongMaterial bumper(9.0/255, 186.0/255, 26.0/255, 1,1,1,25,1);
+	
+	PhongMaterial yellow(1.0, 224.0/255, 26.0/255, 1,1,1,25,1);
+	PhongMaterial blue(26.0/255, 88.0/255, 1, 1,1,1,25,1);
+	PhongMaterial red(1, 26.0/255, 43.0/255, 1,1,1,25,1);
+	PhongMaterial purple(181.0/255, 26.0/255, 1, 1,1,1,25,1);
+	PhongMaterial orange(1, 90.0/255, 26.0/255, 1,1,1,25,1);
+	PhongMaterial green(0, 77.0/255, 36.0/255, 1,1,1,25,1);
+	PhongMaterial brown(144.0/255, 36.0/255, 36.0/255, 1,1,1,25,1);
+	PhongMaterial black(0.08,0.08,0.08, 1,1,1,25,1);
+	PhongMaterial cue(233.0/255, 233.0/255, 233.0/255, 1,1,1,25,1);
 
-	float yellow[] = {1.0, 224.0/255, 26.0/255};
-	float blue[] = {26.0/255, 88.0/255, 1};
-	float red[] = {1, 26.0/255, 43.0/255};
-	float purple[] = {181.0/255, 26.0/255, 1};
-	float orange[] = {1, 90.0/255, 26.0/255};
-	float green[] = {0, 77.0/255, 36.0/255};
-	float brown[] = {144.0/255, 36.0/255, 36.0/255};
-	float black[] = {0.08,0.08,0.08};
-	float cue[] = {233.0/255, 233.0/255, 233.0/255};
 
-	PhongMaterial p(1,1,1,.2,.2,.8,25,1);
-
-	c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField, p)); //playing area
-	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table, p)); //underneath
-	c.addModel(new Block(sIF, -136, 0, -3, 10, 119, 14, table, p)); //left side
-	c.addModel(new Block(sIF, 136, 0, -3, 10, 119, 14, table, p)); //right side
-	c.addModel(new Block(sIF, -64, 72.5, -3, 118, 10, 14, table, p)); //up left
-	c.addModel(new Block(sIF, 64, 72.5, -3, 118, 10, 14, table, p)); //up right
-	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table, p)); //down left
-	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table, p)); //down right
+	c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField)); //playing area
+	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table)); //underneath //table
+	c.addModel(new Block(sIF, -136, 0, -3, 10, 119, 14, table)); //left side
+	c.addModel(new Block(sIF, 136, 0, -3, 10, 119, 14, table)); //right side
+	c.addModel(new Block(sIF, -64, 72.5, -3, 118, 10, 14, table)); //up left
+	c.addModel(new Block(sIF, 64, 72.5, -3, 118, 10, 14, table)); //up right
+	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table)); //down left
+	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
 
 	//Pool balls
 	float position[3] = {-100, -30, 3.175};
@@ -89,17 +88,17 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Leg(sIF, -92, 53.5, -10, -60, 8, 12, legs));
 	c.addModel(new Leg(sIF, 92, 53.5, -10, -60, 8, 12, legs));
 	//bridge connecting the legs
-	c.addModel(new Block(sIF, -92, 0, -18, 6, 100, 16, legs, p));
-	c.addModel(new Block(sIF, 92, 0, -18, 6, 100, 16, legs, p));
+	c.addModel(new Block(sIF, -92, 0, -18, 6, 100, 16, legs));
+	c.addModel(new Block(sIF, 92, 0, -18, 6, 100, 16, legs));
 
 	//pockets and pocketSides
 	c.addModel(new Leg(sIF, 0, 72.5, -8, 0, 5, 5, pockets));
-	c.addModel(new Block(sIF, 0, 72.5, -9, 10, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 0, 78.5, -3, 14, 2, 14, pocketSides, p));
+	c.addModel(new Block(sIF, 0, 72.5, -9, 10, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 0, 78.5, -3, 14, 2, 14, pocketSides));
 
 	c.addModel(new Leg(sIF, 0, -72.5, -8, 0, 5, 5, pockets));
-	c.addModel(new Block(sIF, 0, -72.5, -9, 10, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 0, -78.5, -3, 14, 2, 14, pocketSides, p));
+	c.addModel(new Block(sIF, 0, -72.5, -9, 10, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 0, -78.5, -3, 14, 2, 14, pocketSides));
 
 	c.addModel(new Leg(sIF, -135, 70.5, -8, 0, 5, 5, pockets));
 	c.addModel(new Leg(sIF, 135, 70.5, -8, 0, 5, 5, pockets));
@@ -107,33 +106,33 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Leg(sIF, -135, -70.5, -8, 0, 5, 5, pockets));
 	c.addModel(new Leg(sIF, 135, -70.5, -8, 0, 5, 5, pockets));
 
-	c.addModel(new Block(sIF, -136, -68.5, -9, 10, 18, 2, pocketSides, p));
-	c.addModel(new Block(sIF, -127, -72.5, -9, 8, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, -140.5, -68.5, -2, 1, 18, 12, pocketSides, p));
-	c.addModel(new Block(sIF, -132, -77, -2, 18, 1, 12, pocketSides, p));
-	c.addModel(new Block(sIF, -136, -62.5, -4, 10, 6, 8, pocketSides, p));
-	c.addModel(new Block(sIF, -126, -72.5, -4, 8, 10, 8, pocketSides, p));
+	c.addModel(new Block(sIF, -136, -68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, -127, -72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, -140.5, -68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, -132, -77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, -136, -62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, -126, -72.5, -4, 8, 10, 8, pocketSides));
 
-	c.addModel(new Block(sIF, 136, -68.5, -9, 10, 18, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 127, -72.5, -9, 8, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 140.5, -68.5, -2, 1, 18, 12, pocketSides, p));
-	c.addModel(new Block(sIF, 132, -77, -2, 18, 1, 12, pocketSides, p));
-	c.addModel(new Block(sIF, 136, -62.5, -4, 10, 6, 8, pocketSides, p));
-	c.addModel(new Block(sIF, 126, -72.5, -4, 8, 10, 8, pocketSides, p));
+	c.addModel(new Block(sIF, 136, -68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, 127, -72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 140.5, -68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, 132, -77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, 136, -62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, 126, -72.5, -4, 8, 10, 8, pocketSides));
 
-	c.addModel(new Block(sIF, -136, 68.5, -9, 10, 18, 2, pocketSides, p));
-	c.addModel(new Block(sIF, -127, 72.5, -9, 8, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, -140.5, 68.5, -2, 1, 18, 12, pocketSides, p));
-	c.addModel(new Block(sIF, -132, 77, -2, 18, 1, 12, pocketSides, p));
-	c.addModel(new Block(sIF, -136, 62.5, -4, 10, 6, 8, pocketSides, p));
-	c.addModel(new Block(sIF, -126, 72.5, -4, 8, 10, 8, pocketSides, p));
+	c.addModel(new Block(sIF, -136, 68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, -127, 72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, -140.5, 68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, -132, 77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, -136, 62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, -126, 72.5, -4, 8, 10, 8, pocketSides));
 
-	c.addModel(new Block(sIF, 136, 68.5, -9, 10, 18, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 127, 72.5, -9, 8, 10, 2, pocketSides, p));
-	c.addModel(new Block(sIF, 140.5, 68.5, -2, 1, 18, 12, pocketSides, p));
-	c.addModel(new Block(sIF, 132, 77, -2, 18, 1, 12, pocketSides, p));
-	c.addModel(new Block(sIF, 136, 62.5, -4, 10, 6, 8, pocketSides, p));
-	c.addModel(new Block(sIF, 126, 72.5, -4, 8, 10, 8, pocketSides, p));
+	c.addModel(new Block(sIF, 136, 68.5, -9, 10, 18, 2, pocketSides));
+	c.addModel(new Block(sIF, 127, 72.5, -9, 8, 10, 2, pocketSides));
+	c.addModel(new Block(sIF, 140.5, 68.5, -2, 1, 18, 12, pocketSides));
+	c.addModel(new Block(sIF, 132, 77, -2, 18, 1, 12, pocketSides));
+	c.addModel(new Block(sIF, 136, 62.5, -4, 10, 6, 8, pocketSides));
+	c.addModel(new Block(sIF, 126, 72.5, -4, 8, 10, 8, pocketSides));
 }
 
 void set3DViewingInformation(double overallBB[])

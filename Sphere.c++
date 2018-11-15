@@ -2,7 +2,8 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(ShaderIF* sIF, float center[], float radius, float color[]) : SceneElement(sIF)
+Sphere::Sphere(ShaderIF* sIF, float center[], float radius, PhongMaterial matl) :
+  SceneElement(sIF), matl(matl)
 {
   xmin = center[0] - radius;
   xmax = center[0] + radius;
@@ -10,10 +11,6 @@ Sphere::Sphere(ShaderIF* sIF, float center[], float radius, float color[]) : Sce
   ymax = center[1] + radius;
   zmin = center[2] - radius;
   zmax = center[2] + radius;
-
-  kd[0] = ka[0] = color[0];
-  kd[1] = ka[1] = color[1];
-  kd[2] = ka[2] = color[2];
 
   x = center[0];
   y = center[1];
@@ -235,18 +232,15 @@ void Sphere::generateSphere() {
 
 void Sphere::renderSphere() {
   glBindVertexArray(vao[0]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  establishMaterial(matl);
   glDrawArrays(GL_TRIANGLE_FAN, 0, THETA_POINTS+2);
 
   glBindVertexArray(vao[1]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  establishMaterial(matl);
   glDrawArrays(GL_TRIANGLE_FAN, 0, THETA_POINTS+2);
 
   glBindVertexArray(vao[2]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  establishMaterial(matl);
   for(int i=0; i<THETA_POINTS*(PHI_POINTS-2); i++){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
     glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
@@ -259,11 +253,8 @@ void Sphere::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderIF->getShaderPgmID());
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(mat));
-	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(mat));
+  establishView();
+  establishLightingEnvironment();
 
 	renderSphere();
 

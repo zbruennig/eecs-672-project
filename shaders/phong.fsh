@@ -12,8 +12,10 @@ in PVA
 uniform mat4 ec_lds; // so projection type and hence vHat can be determined
 
 // Phong material properties (RGB reflectances);
-uniform vec3 ka = vec3(0.8, 0.0, 0.0); // default: darkish red
-uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
+uniform vec3 ka = vec3(0.0, 0.0, 0.0); // default: black
+uniform vec3 kd = vec3(0.0, 0.0, 0.0);
+uniform vec3 ks = vec3(0.0, 0.0, 0.0);
+uniform float m = 1;
 // Lighting environment
 // RGB strength of assumed ambient light:
 uniform vec3 La = vec3(0.25, 0.25, 0.25);
@@ -40,7 +42,7 @@ vec4 evaluateLightingModel()
 	g += kd.g * dotProduct;
 	b += kd.b * dotProduct;
 
-	return vec4(r, g, b, 1.0);
+	return vec4(r, g, b, 1);
 }
 
 void main()

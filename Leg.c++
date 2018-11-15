@@ -5,7 +5,8 @@
 typedef float vec3[3];
 
 Leg::Leg(ShaderIF* sIF, float xc, float yc, float minz, float maxz,
-  float upperRadius, float lowerRadius, float color[]) : SceneElement(sIF)
+  float upperRadius, float lowerRadius, PhongMaterial matl) :
+  SceneElement(sIF), matl(matl)
 {
 
   float radius = upperRadius > lowerRadius ? upperRadius : lowerRadius;
@@ -20,10 +21,6 @@ Leg::Leg(ShaderIF* sIF, float xc, float yc, float minz, float maxz,
   lower = lowerRadius;
   x = xc;
   y = yc;
-
-  kd[0] = ka[0] = color[0];
-  kd[1] = ka[1] = color[1];
-  kd[2] = ka[2] = color[2];
 
   generateLeg();
 }
@@ -167,18 +164,15 @@ void Leg::generateLeg() {
 
 void Leg::renderLeg() {
   glBindVertexArray(vao[0]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd); //We will make ka the same as kd
+  establishMaterial(matl);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(POINTS_AROUND_SLICE+1));
 
   glBindVertexArray(vao[1]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd);
+  establishMaterial(matl);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, (POINTS_AROUND_SLICE+2));
 
   glBindVertexArray(vao[2]);
-  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  glUniform3fv(shaderIF->ppuLoc("ka"), 1, kd);
+  establishMaterial(matl);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, (POINTS_AROUND_SLICE+2));
 }
 
@@ -188,11 +182,8 @@ void Leg::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderIF->getShaderPgmID());
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(mat));
-	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(mat));
+  establishView();
+  establishLightingEnvironment();
 
 	renderLeg();
 
