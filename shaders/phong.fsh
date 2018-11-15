@@ -5,7 +5,7 @@
 in PVA
 {
 	vec3 ecPosition;
-	vec3 ecUnitNormal;
+	vec3 ecUnitNormal; //TODO: Conditionally negate
 } pvaIn;
 
 // For lighing model:
@@ -19,11 +19,12 @@ uniform float m = 1;
 // Lighting environment
 // RGB strength of assumed ambient light:
 uniform vec3 La = vec3(0.25, 0.25, 0.25);
+/*uniform vec3 L[] = {vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0)};*/ //TODO make right
 
 // output color from the lighting model:
 out vec4 fragmentColor;
 
-vec4 evaluateLightingModel()
+vec4 evaluateLightingModel() //TODO Change
 {
 	vec3 liHat = vec3(0.0, 0.0, 1.0); // directional light in EC at eye (a flashlight)
 
@@ -43,6 +44,10 @@ vec4 evaluateLightingModel()
 	b += kd.b * dotProduct;
 
 	return vec4(r, g, b, 1);
+}
+
+float atten(float i, vec3 Q){ //TODO typeof i?
+	return 0; //TODO
 }
 
 void main()
