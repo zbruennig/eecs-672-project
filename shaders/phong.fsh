@@ -5,11 +5,13 @@
 in PVA
 {
 	vec3 ecPosition;
-	vec3 ecUnitNormal; //TODO: Conditionally negate
+	vec3 ecUnitNormal;
 } pvaIn;
 
 // For lighing model:
 uniform mat4 ec_lds; // so projection type and hence vHat can be determined
+
+uniform int actualNumLights = 3;
 
 // Phong material properties (RGB reflectances);
 uniform vec3 ka = vec3(0.0, 0.0, 0.0); // default: black
@@ -19,35 +21,54 @@ uniform float m = 1;
 // Lighting environment
 // RGB strength of assumed ambient light:
 uniform vec3 La = vec3(0.25, 0.25, 0.25);
-/*uniform vec3 L[] = {vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0)};*/ //TODO make right
+uniform vec3 L[] = vec3[3](vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0));
+uniform vec3 p_ecLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -10.0), vec3(25.0, 40.0, 15.0));
+//cs for lighting model attenuation function
+uniform vec4 c = vec4(100,100,0.01,0);
 
 // output color from the lighting model:
 out vec4 fragmentColor;
 
-vec4 evaluateLightingModel() //TODO Change
-{
-	vec3 liHat = vec3(0.0, 0.0, 1.0); // directional light in EC at eye (a flashlight)
-
-	//Compute each component, and the dot product separately
-	float dotProduct = ( (liHat.x * pvaIn.ecUnitNormal.x) + (liHat.y * pvaIn.ecUnitNormal.y) + (liHat.z * pvaIn.ecUnitNormal.z) );
-	float r = ka.r * La.r;
-	float g = ka.g * La.g;
-	float b = ka.b * La.b;
-
-	if (dotProduct < 0) {
-	//I don't want to worry about orientation of the normal vector
-	//In our current model, things this might incorrectly affect will not be visible
-		dotProduct *= -1;
-	}
-	r += kd.r * dotProduct;
-	g += kd.g * dotProduct;
-	b += kd.b * dotProduct;
-
-	return vec4(r, g, b, 1);
+float atten(int i, vec3 Q){
+	float d = distance(Q, p_ecLightPos[i]);
+	return c[0] / (c[1] + c[2]*d + c[3]*d*d);
 }
 
-float atten(float i, vec3 Q){ //TODO typeof i?
-	return 0; //TODO
+vec4 evaluateLightingModel()
+{
+	vec3 vHat = -1*pvaIn.ecPosition;
+	if(false){ //other perspectives
+		vec3 v = vec3(-1*ec_lds[0][2]/ec_lds[0][0], -1*ec_lds[1][2]/ec_lds[1][1], 1);
+		vHat = normalize(v);
+	}
+
+	vec3 ec_nHat = dot(pvaIn.ecUnitNormal, vHat) < 0 ? pvaIn.ecUnitNormal * -1 : pvaIn.ecUnitNormal;
+
+	vec3 liHat[3] = vec3[3](vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+	for(int i = 0; i<actualNumLights; i++){
+		liHat[i] = normalize(p_ecLightPos[i] - pvaIn.ecPosition);
+	}
+
+	vec3 riHat[3] = vec3[3](vec3(0.0, 0.0, 1.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+	for(int i = 0; i<actualNumLights; i++){
+		vec3 u = normalize(ec_nHat);
+		vec3 perp = liHat[i] - (dot(u, liHat[i]) * u);
+		riHat[i] = normalize(liHat[i] * 2*perp);
+	}
+
+	//All parameters defined, this is the equation!
+	vec3 I = ka*La;
+	for(int i=0; i<actualNumLights; i++){
+		float fiQ = atten(i, pvaIn.ecPosition);
+		vec3 diff = kd * dot(ec_nHat, liHat[i]);
+		float specular = dot(riHat[i], vHat);
+
+		//I would be using the first one, but it produces weird results. Sorry.
+		/*vec3 spec = ks * pow(specular, m);*/
+		vec3 spec = ks * specular;
+		I += fiQ * (diff + spec);
+	}
+	return vec4(I, 0);
 }
 
 void main()

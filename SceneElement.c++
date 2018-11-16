@@ -2,6 +2,7 @@
 
 #include "SceneElement.h"
 #include "OpenGLImageReader.h"
+#include <iostream>
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
@@ -37,16 +38,14 @@ SceneElement::~SceneElement()
 {
 }
 
-// NOTE: You may want to modify the interface to this method so that you
-//       can pass parameters in case you want to establish lights differently
-//       for different parts of the scene.
-void SceneElement::establishLightingEnvironment( /* ... parameters? ... */ )
+void SceneElement::establishLightingEnvironment()
 {
-	// This should set all light source parameters, including:
-	// "actualNumLights", "ecLightPosition", "lightStrength", "globalAmbient"
-	// When setting "ecLightPosition", be sure to transform the coordinates
-	// from MC to EC using the current mc_ec matrix if the position was specified
-	// in MC.
+	const int NUM_LIGHTS = 3;
+	glUniform1i(shaderIF->ppuLoc("actualNumLights"), NUM_LIGHTS);
+
+	float c[4] = {100,100,0.01,0};
+	//This causes errors and I don't know why
+	// glUniform3fv(shaderIF->ppuLoc("c"), 1, c);
 }
 
 void SceneElement::establishMaterial(const PhongMaterial& matl)
@@ -55,25 +54,12 @@ void SceneElement::establishMaterial(const PhongMaterial& matl)
 	// "ka", "kd", "ks", "m", and (for project 4) "alpha"
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, matl.kd);
 	glUniform3fv(shaderIF->ppuLoc("ka"), 1, matl.ka);
-	// glUniform3fv(shaderIF->ppuLoc("ks"), 1, matl.ks);
-	// glUniform1f(shaderIF->ppuLoc("m"), matl.m);
+	glUniform3fv(shaderIF->ppuLoc("ks"), 1, matl.ks);
+	// glUniform1f(shaderIF->ppuLoc("m"), matl.m); //TODO uncomment if it works
 }
 
-// NOTE: You may want to modify the interface to this method so that you
-//       can pass parameters to help you specify some of the parameters
-//       mentioned in the comments that follow.
 void SceneElement::establishTexture( /* ... parameters? ... */ )
 {
-	// Set texture-related parameters:
-	// 1. OpenGL ones including glActiveTexture, glBindTexture, glTexParameter*
-	// 2. Parameters communicated via per-primitive uniform variables defined in
-	//    your shader program that allow you to control whether a texture is to
-	//    to be used, and, if so, where the texture comes from (e.g., procedural,
-	//    a sampler2D, etc.) and how to combine its color with with the color
-	//    computed by your Phong local lighting model color.
-	//
-	// (If you are texture-mapping onto faces of BasicShape instances,
-	// see that documentation for specific additional details.)
 }
 
 void SceneElement::establishView()
