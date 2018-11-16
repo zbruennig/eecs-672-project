@@ -6,6 +6,10 @@ in PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec3 p_ecLightPos0;
+	vec3 p_ecLightPos1;
+	vec3 p_ecLightPos2;
+	//Couldn't figure out how to pass arrays. I know. I hate looking at it too.
 } pvaIn;
 
 // For lighing model:
@@ -22,9 +26,9 @@ uniform float m = 1;
 // RGB strength of assumed ambient light:
 uniform vec3 La = vec3(0.25, 0.25, 0.25);
 uniform vec3 L[] = vec3[3](vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0));
-uniform vec3 p_ecLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -10.0), vec3(25.0, 40.0, 15.0));
+/*uniform*/ vec3 p_ecLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -10.0), vec3(25.0, 40.0, 15.0));
 //cs for lighting model attenuation function
-uniform vec4 c = vec4(100,100,0.01,0);
+uniform vec4 c = vec4(1,1,0,0);
 
 // output color from the lighting model:
 out vec4 fragmentColor;
@@ -36,6 +40,10 @@ float atten(int i, vec3 Q){
 
 vec4 evaluateLightingModel()
 {
+	p_ecLightPos[0] = pvaIn.p_ecLightPos0;
+	p_ecLightPos[1] = pvaIn.p_ecLightPos1;
+	p_ecLightPos[2] = pvaIn.p_ecLightPos2;
+
 	vec3 vHat = -1*pvaIn.ecPosition;
 	if(false){ //other perspectives
 		vec3 v = vec3(-1*ec_lds[0][2]/ec_lds[0][0], -1*ec_lds[1][2]/ec_lds[1][1], 1);

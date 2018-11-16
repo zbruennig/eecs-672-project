@@ -4,6 +4,8 @@
 #include "OpenGLImageReader.h"
 #include <iostream>
 
+typedef float vec3[3];
+
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
 		0.25, 0.5, 1.0, 0.0,
@@ -43,9 +45,18 @@ void SceneElement::establishLightingEnvironment()
 	const int NUM_LIGHTS = 3;
 	glUniform1i(shaderIF->ppuLoc("actualNumLights"), NUM_LIGHTS);
 
-	float c[4] = {100,100,0.01,0};
-	//This causes errors and I don't know why
-	// glUniform3fv(shaderIF->ppuLoc("c"), 1, c);
+	float c[4] = {200,100,0,0.01}; //TODO add multiple?
+	glUniform4fv(shaderIF->ppuLoc("c"), 1, c);
+
+	cryph::AffPoint p1(81.997,0,10); //directly above the 8 ball
+	cryph::AffPoint p2(0,0,-30); //below the table
+	cryph::AffPoint p3(-200,30,10); //off to the left, lined with the cue ball
+	//convert to eye coordinates
+
+	float points[9] = {(float) p1.x, (float) p1.y, (float) p1.z,
+										 (float) p2.x, (float) p2.y, (float) p2.z,
+										 (float) p3.x, (float) p3.y, (float) p3.z};
+	glUniform3fv(shaderIF->ppuLoc("mcLightPos"), 3, points);
 }
 
 void SceneElement::establishMaterial(const PhongMaterial& matl)

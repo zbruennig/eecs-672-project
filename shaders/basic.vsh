@@ -28,6 +28,9 @@ layout (location = 0) in vec3 mcPosition;
 // 2. incoming vertex normal vector in model coordinates
 in vec3 mcNormal; // incoming normal vector in model coordinates
 
+uniform int actualNumLights = 3;
+uniform vec3 mcLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -15.0), vec3(25.0, 40.0, 15.0));
+
 // The lighting model will be computed in the fragment shader, so we
 // just need to pass on the per-vertex information it needs to do so.
 // The lighting model is computed in eye coordinate space, hence:
@@ -35,6 +38,9 @@ out PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec3 p_ecLightPos0;
+	vec3 p_ecLightPos1;
+	vec3 p_ecLightPos2;
 } pvaOut;
 
 void main()
@@ -44,6 +50,14 @@ void main()
 	pvaOut.ecPosition = p_ecPosition.xyz/p_ecPosition.w;
 	mat3 normalMatrix = transpose( inverse( mat3x3(mc_ec) ) );
 	pvaOut.ecUnitNormal = normalize(normalMatrix * mcNormal);
+
+	//This is where I try to convert MC light sources to EC.
+	vec4 p_ecLightSource = vec4(mcLightPos[0], 1);
+	pvaOut.p_ecLightPos0 = (p_ecLightSource * mc_ec).xyz;
+	p_ecLightSource = vec4(mcLightPos[1], 1);
+	pvaOut.p_ecLightPos1 = (p_ecLightSource * mc_ec).xyz;
+	p_ecLightSource = vec4(mcLightPos[2], 1);
+	pvaOut.p_ecLightPos2 = (p_ecLightSource * mc_ec).xyz;
 
 	// OpenGL expects us to set "gl_Position" to the projective space
 	// representation of the 3D logical device space coordinates of the
