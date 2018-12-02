@@ -69,8 +69,9 @@ void SceneElement::establishMaterial(const PhongMaterial& matl)
 	// glUniform1f(shaderIF->ppuLoc("m"), matl.m); //TODO uncomment if it works
 }
 
-void SceneElement::establishTexture( /* ... parameters? ... */ )
+void SceneElement::establishTexture(GLuint image)
 {
+	
 }
 
 void SceneElement::establishView()

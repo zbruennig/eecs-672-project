@@ -7,7 +7,7 @@ LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ..
 GL_LIB_LOC = -L/usr/lib/nvidia-375
 GL_LIBRARIES = $(GL_LIB_LOC) -lglfw -lGLU -lGL
 
-OBJS = main.o PhongMaterial.o SceneElement.o ExtendedController.o Block.o Sphere.o Leg.o Bumper.o
+OBJS = main.o PhongMaterial.o SceneElement.o ExtendedController.o Block.o Sphere.o Leg.o Bumper.o TableMaterial.o
 
 main: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 	$(LINK) -o main $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
@@ -43,6 +43,8 @@ Leg.o: Leg.h Leg.c++
 	$(CPP) $(C_FLAGS) Leg.c++
 Bumper.o: Bumper.h Bumper.c++
 	$(CPP) $(C_FLAGS) Bumper.c++
+TableMaterial.o: TableMaterial.h TableMaterial.c++
+	$(CPP) $(C_FLAGS) TableMaterial.c++
 
 clean:
 	rm main *.o

@@ -30,7 +30,7 @@ protected:
 
 	void establishLightingEnvironment( /* ... parameters? ... */ );
 	void establishMaterial(const PhongMaterial& matl);
-	void establishTexture( /* ... parameters? ... */ );
+	void establishTexture(GLuint image);
 	void establishView();
 
 	// lighting environment
