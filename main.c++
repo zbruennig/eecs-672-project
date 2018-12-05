@@ -27,7 +27,7 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	PhongMaterial black(0.08,0.08,0.08, 0.25,0.25,0,1,1);
 	PhongMaterial cue(233.0/255, 233.0/255, 233.0/255, 0.25,0.25,0,1,1);
 
-	c.addModel(new TableMaterial(sIF, 0, 0, -0.5, 262, 135, 1, "./textures/felt.jpg", playingField)); //playing area
+	c.addModel(new TableMaterial(sIF, 0, 0, -0.5, 262, 135, 1, "./textures/felt2.jpg", playingField)); //playing area
 	// c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField)); //playing area
 	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table)); //underneath //table
 	c.addModel(new Block(sIF, -136, 0, -3, 10, 119, 14, table)); //left side
