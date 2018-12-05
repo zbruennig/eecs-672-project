@@ -9,7 +9,7 @@ in PVA
 	vec3 p_ecLightPos0;
 	vec3 p_ecLightPos1;
 	vec3 p_ecLightPos2;
-	//Couldn't figure out how to pass arrays. I know. I hate looking at it too.
+	vec2 texCoords;
 } pvaIn;
 
 // For lighing model:
@@ -29,6 +29,16 @@ uniform vec3 L[] = vec3[3](vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1
 /*uniform*/ vec3 p_ecLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -10.0), vec3(25.0, 40.0, 15.0));
 //cs for lighting model attenuation function
 uniform vec4 c = vec4(1,1,0,0);
+
+// *************** NEW ******************
+//Translucency, alpha, and texture variables
+uniform bool usingAlphaBlending = false;
+uniform float alpha = 1.0;
+uniform bool isOpaque = true;
+uniform bool isTranslucent = false;
+
+uniform bool usingTexture = false;
+uniform sampler2D texMap;
 
 // output color from the lighting model:
 out vec4 fragmentColor;
@@ -82,4 +92,26 @@ vec4 evaluateLightingModel()
 void main()
 {
 	fragmentColor = evaluateLightingModel();
+
+	// Special instructions just in case texture mapping
+	if(usingTexture) {
+		vec4 texColor = texture(texMap, pvaIn.texCoords);
+		fragmentColor = texColor * fragmentColor;
+	}
+
+	fragmentColor.a = alpha;
+
+	//TODO look over logic
+	if(usingAlphaBlending) {
+		if(isOpaque) {
+			if (fragmentColor.a <= 1) {
+				discard;
+			}
+		}
+		else{
+			if (fragmentColor.a > 1){
+				discard;
+			}
+		}
+	}
 }

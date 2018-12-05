@@ -27,6 +27,7 @@ uniform mat4 ec_lds = // (W-V map) * (projection matrix)
 layout (location = 0) in vec3 mcPosition;
 // 2. incoming vertex normal vector in model coordinates
 in vec3 mcNormal; // incoming normal vector in model coordinates
+in vec2 texCoords; // s,t
 
 uniform int actualNumLights = 3;
 uniform vec3 mcLightPos[] = vec3[3](vec3(0.0, 0.0, 10.0), vec3(0.0, 0.0, -15.0), vec3(25.0, 40.0, 15.0));
@@ -41,6 +42,7 @@ out PVA
 	vec3 p_ecLightPos0;
 	vec3 p_ecLightPos1;
 	vec3 p_ecLightPos2;
+	vec2 texCoords;
 } pvaOut;
 
 void main()
@@ -58,6 +60,7 @@ void main()
 	pvaOut.p_ecLightPos1 = (p_ecLightSource * mc_ec).xyz;
 	p_ecLightSource = vec4(mcLightPos[2], 1);
 	pvaOut.p_ecLightPos2 = (p_ecLightSource * mc_ec).xyz;
+	pvaOut.texCoords = texCoords;
 
 	// OpenGL expects us to set "gl_Position" to the projective space
 	// representation of the 3D logical device space coordinates of the

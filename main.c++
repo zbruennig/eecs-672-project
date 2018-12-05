@@ -35,7 +35,7 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table)); //down left
 	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
 
-	//Pool balls
+	// Pool balls
 	float position[3] = {-100, -30, 3.175};
 	c.addModel(new Sphere(sIF, position, 3.175, cue)); //cue ball
 	position[0] = 60; position[1] = 0;
@@ -81,7 +81,7 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	}
 	c.addModel(new Bumper(sIF, points2, 0, 4, bumper));
 
-	//Legs of the table
+	// Legs of the table
 	c.addModel(new Leg(sIF, -92, -53.5, -10, -60, 8, 12, legs));
 	c.addModel(new Leg(sIF, 92, -53.5, -10, -60, 8, 12, legs));
 	c.addModel(new Leg(sIF, -92, 53.5, -10, -60, 8, 12, legs));

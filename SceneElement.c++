@@ -45,7 +45,7 @@ void SceneElement::establishLightingEnvironment()
 	const int NUM_LIGHTS = 3;
 	glUniform1i(shaderIF->ppuLoc("actualNumLights"), NUM_LIGHTS);
 
-	float c[4] = {200,100,0,0.01}; //TODO add multiple?
+	float c[4] = {200,100,0,0.002};
 	glUniform4fv(shaderIF->ppuLoc("c"), 1, c);
 
 	cryph::AffPoint p1(81.997,0,10); //directly above the 8 ball
@@ -66,12 +66,21 @@ void SceneElement::establishMaterial(const PhongMaterial& matl)
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, matl.kd);
 	glUniform3fv(shaderIF->ppuLoc("ka"), 1, matl.ka);
 	glUniform3fv(shaderIF->ppuLoc("ks"), 1, matl.ks);
+	glUniform1f(shaderIF->ppuLoc("alpha"), matl.alpha);
 	// glUniform1f(shaderIF->ppuLoc("m"), matl.m); //TODO uncomment if it works
 }
 
-void SceneElement::establishTexture(GLuint image)
+void SceneElement::establishTexture(GLuint image, GLenum wrapS, GLenum wrapT)
 {
-	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, image);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
+	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border_color);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glUniform1i(shaderIF->ppuLoc("usingTexture"), true);
 }
 
 void SceneElement::establishView()

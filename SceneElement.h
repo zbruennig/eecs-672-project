@@ -30,7 +30,7 @@ protected:
 
 	void establishLightingEnvironment( /* ... parameters? ... */ );
 	void establishMaterial(const PhongMaterial& matl);
-	void establishTexture(GLuint image);
+	void establishTexture(GLuint image, GLenum wrapS, GLenum wrapT);
 	void establishView();
 
 	// lighting environment
@@ -38,6 +38,8 @@ protected:
 	static bool posInModelCoordinates[MAX_NUM_LIGHTS]; // pos is in MC or EC?
 	static float lightStrength[3*MAX_NUM_LIGHTS]; // (r,g,b) for each light
 	static float globalAmbient[3]; // (r,g,b) for ambient term, A
+
+	//textures
 };
 
 #endif
