@@ -112,10 +112,6 @@ void Block::render()
 
 	establishView();
 	establishLightingEnvironment();
-	// 3. Establish Lighting environment
-	//    complete the implementation of SceneElement::establishLightingEnvironment
-	//    and then call it here.
-
 
 	renderBlock();
 

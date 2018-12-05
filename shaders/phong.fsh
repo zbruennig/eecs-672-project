@@ -97,6 +97,7 @@ void main()
 	if(usingTexture) {
 		vec4 texColor = texture(texMap, pvaIn.texCoords);
 		fragmentColor = texColor * fragmentColor;
+	 //TODO remove, also get texMap in here
 	}
 
 	fragmentColor.a = alpha;
