@@ -91,6 +91,13 @@ void SceneElement::establishView()
 	float m[16];
 	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(m));
 	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(m));
+
+	ExtendedController* ec = dynamic_cast<ExtendedController*>(Controller::getCurrentController());
+	glUniform1i(shaderIF->ppuLoc("sceneHasTranslucentObjects"), 1);
+	if (ec->drawingOpaque())
+	    glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), true);
+	else
+	    glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), false);
 }
 
 GLuint SceneElement::readTextureImage(const std::string& imgFileName)

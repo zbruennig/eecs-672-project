@@ -32,9 +32,9 @@ uniform vec4 c = vec4(1,1,0,0);
 
 // *************** NEW ******************
 //Translucency, alpha, and texture variables
-uniform bool usingAlphaBlending = false;
+uniform bool sceneHasTranslucentObjects = false;
 uniform float alpha = 1.0;
-uniform bool isOpaque = true;
+uniform bool drawingOpaqueObjects = true;
 uniform bool isTranslucent = false;
 
 uniform bool usingTexture = false;
@@ -103,16 +103,14 @@ void main()
 	fragmentColor.a = alpha;
 
 	//TODO look over logic
-	if(usingAlphaBlending) {
-		if(isOpaque) {
+	if(sceneHasTranslucentObjects) {
+		if(drawingOpaqueObjects) {
 			if (fragmentColor.a <= 1) {
 				discard;
 			}
 		}
-		else{
-			if (fragmentColor.a > 1){
+		else if (fragmentColor.a >= 1){
 				discard;
-			}
 		}
 	}
 }

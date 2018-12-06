@@ -10,32 +10,37 @@
 void createScene(ExtendedController& c, ShaderIF* sIF)
 {
 	//Define the material properties of everything we'll need.
-	PhongMaterial playingField(34.0/255, 168.0/255, 52.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial table(121.0/255, 91.0/255, 69.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial pockets(0.1,0.1,0.1, .25,.25,0,1,1);
-	PhongMaterial pocketSides(106.0/255, 116.0/255, 111.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial legs(0.3, 0.3, 0.3, 0.25,0.25,0,1,1);
-	PhongMaterial bumper(9.0/255, 186.0/255, 26.0/255, 0.25,0.25,0,1,1);
+	PhongMaterial playingField(34.0/255, 168.0/255, 52.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial table(121.0/255, 91.0/255, 69.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial tableTranslucent(121.0/255, 91.0/255, 69.0/255, 0.25,0.25,0,1,.5);
+	PhongMaterial pockets(0.1,0.1,0.1, .25,.25,0,1,0);
+	PhongMaterial pocketSides(106.0/255, 116.0/255, 111.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial legs(0.3, 0.3, 0.3, 0.25,0.25,0,1,0);
+	PhongMaterial bumper(9.0/255, 186.0/255, 26.0/255, 0.25,0.25,0,1,0);
 
-	PhongMaterial yellow(1.0, 224.0/255, 26.0/255, 0.25,0.25,0.,1,1);
-	PhongMaterial blue(26.0/255, 88.0/255, 1, 0.25,0.25,0,1,1);
-	PhongMaterial red(1, 26.0/255, 43.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial purple(181.0/255, 26.0/255, 1, 0.25,0.25,0,1,1);
-	PhongMaterial orange(1, 90.0/255, 26.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial green(0, 77.0/255, 36.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial brown(144.0/255, 36.0/255, 36.0/255, 0.25,0.25,0,1,1);
-	PhongMaterial black(0.08,0.08,0.08, 0.25,0.25,0,1,1);
-	PhongMaterial cue(233.0/255, 233.0/255, 233.0/255, 0.25,0.25,0,1,1);
+	PhongMaterial yellow(1.0, 224.0/255, 26.0/255, 0.25,0.25,0.,1,0);
+	PhongMaterial blue(26.0/255, 88.0/255, 1, 0.25,0.25,0,1,0);
+	PhongMaterial red(1, 26.0/255, 43.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial purple(181.0/255, 26.0/255, 1, 0.25,0.25,0,1,0);
+	PhongMaterial orange(1, 90.0/255, 26.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial green(0, 77.0/255, 36.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial brown(144.0/255, 36.0/255, 36.0/255, 0.25,0.25,0,1,0);
+	PhongMaterial black(0.08,0.08,0.08, 0.25,0.25,0,1,0);
+	PhongMaterial cue(233.0/255, 233.0/255, 233.0/255, 0.25,0.25,0,1,0);
 
 	c.addModel(new TableMaterial(sIF, 0, 0, -0.5, 262, 135, 1, "./textures/felt2.jpg", playingField)); //playing area
-	// c.addModel(new Block(sIF, 0, 0, -0.5, 262, 135, 1, playingField)); //playing area
-	c.addModel(new Block(sIF, 0, 0, -5.5, 262, 135, 9, table)); //underneath //table
-	c.addModel(new Block(sIF, -136, 0, -3, 10, 119, 14, table)); //left side
-	c.addModel(new Block(sIF, 136, 0, -3, 10, 119, 14, table)); //right side
-	c.addModel(new Block(sIF, -64, 72.5, -3, 118, 10, 14, table)); //up left
-	c.addModel(new Block(sIF, 64, 72.5, -3, 118, 10, 14, table)); //up right
-	c.addModel(new Block(sIF, -64, -72.5, -3, 118, 10, 14, table)); //down left
-	c.addModel(new Block(sIF, 64, -72.5, -3, 118, 10, 14, table)); //down right
+	c.addModel(new TableMaterial(sIF, 0, 0, -5.5, 262, 135, 9, "./textures/wood.jpg", table)); //underneath //table
+	c.addModel(new TableMaterial(sIF, -136, 0, -3, 10, 119, 14, "./textures/wood.jpg", table)); //left side
+	c.addModel(new TableMaterial(sIF, 136, 0, -3, 10, 119, 14, "./textures/wood.jpg", table)); //right side
+	c.addModel(new TableMaterial(sIF, -64, 72.5, -3, 118, 10, 14, "./textures/wood.jpg", table)); //up left
+	c.addModel(new TableMaterial(sIF, 64, 72.5, -3, 118, 10, 14, "./textures/wood.jpg", table)); //up right
+	c.addModel(new TableMaterial(sIF, -64, -72.5, -3, 118, 10, 14, "./textures/wood.jpg", table)); //down left
+	c.addModel(new TableMaterial(sIF, 64, -72.5, -3, 118, 10, 14, "./textures/wood.jpg", table)); //down right
+
+	//Pool chalk
+	c.addModel(new Block(sIF, 30, 72, 5, 2, 2, 2, blue));
+	c.addModel(new Block(sIF, -50, -74.5, 5, 2, 2, 2, blue));
+	c.addModel(new Block(sIF, 133, -10, 5, 2, 2, 2, blue));
 
 	// Pool balls
 	float position[3] = {-100, -30, 3.175};

@@ -14,6 +14,7 @@
 #include "ModelView.h"
 #include "PhongMaterial.h"
 #include "ShaderIF.h"
+#include "ExtendedController.h"
 
 static const int MAX_NUM_LIGHTS = 3; // MUST BE KEPT SAME AS IN the shader program
 
