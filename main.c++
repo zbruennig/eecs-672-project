@@ -19,7 +19,8 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	PhongMaterial bumper(9.0/255, 186.0/255, 26.0/255, 0.25,0.25,0,1,0);
 
 	PhongMaterial yellow(1.0, 224.0/255, 26.0/255, 0.25,0.25,0.,1,0);
-	PhongMaterial blue(26.0/255, 88.0/255, 1, 0.25,0.25,0,1,0);
+	PhongMaterial blue(13.0/255, 44.0/255, 0.5, 0.25,0.25,0,1,0);
+	PhongMaterial lightblue(26.0/255, 88.0/255, 1, 0.25,0.25,0,1,0);
 	PhongMaterial red(1, 26.0/255, 43.0/255, 0.25,0.25,0,1,0);
 	PhongMaterial purple(181.0/255, 26.0/255, 1, 0.25,0.25,0,1,0);
 	PhongMaterial orange(1, 90.0/255, 26.0/255, 0.25,0.25,0,1,0);
@@ -38,9 +39,9 @@ void createScene(ExtendedController& c, ShaderIF* sIF)
 	c.addModel(new TableMaterial(sIF, 64, -72.5, -3, 118, 10, 14, "./textures/wood.jpg", table)); //down right
 
 	//Pool chalk
-	c.addModel(new Block(sIF, 30, 72, 5, 2, 2, 2, blue));
-	c.addModel(new Block(sIF, -50, -74.5, 5, 2, 2, 2, blue));
-	c.addModel(new Block(sIF, 133, -10, 5, 2, 2, 2, blue));
+	c.addModel(new Block(sIF, 30, 72, 5, 2, 2, 2, lightblue));
+	c.addModel(new Block(sIF, -50, -74.5, 5, 2, 2, 2, lightblue));
+	c.addModel(new Block(sIF, 133, -10, 5, 2, 2, 2, lightblue));
 
 	// Pool balls
 	float position[3] = {-100, -30, 3.175};
